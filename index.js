@@ -1,17 +1,12 @@
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
-
-
 const server = express();
+import { Cat } from "./src/models/categorias.js";
 
+server.get("/", async (request, response) => {
+  const kitty = new Cat({ name: "Zildjian" });
+  kitty.save().then(() => console.log("meow"));
 
-
-server.get("/", (request, response) => {
-
-    response.json({message: "Hola mundo."})
-})
-
+  response.json({ message: "Hola mundo." });
+});
 
 server.listen(process.env.PORT);
-
