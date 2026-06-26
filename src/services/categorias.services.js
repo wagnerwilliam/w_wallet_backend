@@ -12,12 +12,8 @@ export class CategoriasService {
           isConnected = true;
           return Categorias.find();
         })
-        .then((listaCategorias) => {
-          ok(listaCategorias);
-        })
-        .catch((error) => {
-          ko(error);
-        })
+        .then(listaCategorias => ok(listaCategorias))
+        .catch(error => ko(error))
         .finally(() => {
           if (isConnected) {
             mongoose.disconnect();
@@ -35,12 +31,26 @@ export class CategoriasService {
           const nuevaCategoria = new Categorias(data);
           return nuevaCategoria.save();
         })
-        .then((savedKitty) => {
-          ok(savedKitty);
+        .then(categoriaGuardada => ok(categoriaGuardada))
+        .catch(error => ko(error))
+        .finally(() => {
+          if (isConnected) {
+            mongoose.disconnect();
+          }
+        });
+    });
+  };
+
+  eliminarCategoria = (id) => {
+    return new Promise((ok, ko) => {
+      let isConnected = false;
+      connectDB()
+        .then(() => {
+          isConnected = true;
+          return Categorias.findByIdAndDelete(id);
         })
-        .catch((error) => {
-          ko(error);
-        })
+        .then(categoriaEliminada => ok(categoriaEliminada))
+        .catch(error => ko(error))
         .finally(() => {
           if (isConnected) {
             mongoose.disconnect();

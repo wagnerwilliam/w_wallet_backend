@@ -37,4 +37,20 @@ export class CategoriasController {
       return response.status(500).json({ error: error.message });
     }
   };
+
+  eliminar = async (request, response) => {
+    try {
+      const { id } = request.params;
+
+      // if (!name || !type || !user_id) {
+      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
+      // }
+      
+      await this._categoriasService.eliminarCategoria(id);
+      return response.status(204);
+
+    } catch (error) {
+      return response.status(500).json({ error: error.message });
+    }
+  };
 }
