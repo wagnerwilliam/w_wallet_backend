@@ -19,7 +19,7 @@ export class CategoriasController {
 
   crear = async (request, response) => {
     try {
-      const { name, type, user_id } = request.body;
+      const { name, type, color, user_id } = request.body;
 
       // if (!name || !type || !user_id) {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
@@ -28,6 +28,7 @@ export class CategoriasController {
       const resultado = await this._categoriasService.crearCategoria({
         name,
         type,
+        color,
         user_id,
       });
 
