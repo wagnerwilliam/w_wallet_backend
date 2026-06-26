@@ -1,12 +1,18 @@
 import express from "express";
+import cors from "cors";
+import categoriasRouter from "./src/routes/categorias.routes.js";
+
 const server = express();
-import { Cat } from "./src/models/categorias.js";
+
+server.use(express.json());
+server.use(cors());
+
+server.use("/api/categorias", categoriasRouter);
 
 server.get("/", async (request, response) => {
-  const kitty = new Cat({ name: "Zildjian" });
-  kitty.save().then(() => console.log("meow"));
-
   response.json({ message: "Hola mundo." });
 });
 
-server.listen(process.env.PORT);
+server.listen(process.env.PORT, () => {
+  console.log("Servidor en ejecucion.");
+});
