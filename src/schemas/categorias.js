@@ -10,7 +10,7 @@ export const categoriasSchema = Schema({
   type: {
     type: String,
     required: true,
-    enum: ["ingresos", "gastos"],
+    enum: ["ingreso", "gasto"],
   },
   color: {
     type: String,
