@@ -8,5 +8,6 @@ const categoriasController = new CategoriasController(categoriasService);
 
 router.get("/", categoriasController.obtener);
 router.post("/crear", categoriasController.crear);
+router.delete("/eliminar/:id", categoriasController.eliminar);
 
 export default router;
