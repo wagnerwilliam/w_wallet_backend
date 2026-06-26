@@ -10,8 +10,8 @@ export class CategoriasController {
       // }
 
       const resultado = await this._categoriasService.obtenerCategorias();
+      return response.status(200).json(resultado);
 
-      return response.status(200).json({ data: resultado });
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
