@@ -47,7 +47,7 @@ export class CategoriasController {
       // }
       
       await this._categoriasService.eliminarCategoria(id);
-      return response.status(204);
+      return response.sendStatus(204);
 
     } catch (error) {
       return response.status(500).json({ error: error.message });
