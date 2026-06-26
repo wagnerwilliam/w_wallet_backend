@@ -9,11 +9,20 @@ export const categoriasSchema = Schema({
   },
   type: {
     type: String,
-    required: false,
+    required: true,
+    enum: ["ingresos", "gastos"],
+  },
+  color: {
+    type: String,
+    default: "#0F766E",
+  },
+  is_active: {
+    type: Boolean,
+    default: true,
   },
   user_id: {
     type: String,
-    required: false,
+    required: true,
   },
   created_at: {
     type: Date,
