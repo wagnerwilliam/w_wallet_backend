@@ -14,7 +14,7 @@ export const categoriasSchema = Schema({
   },
   color: {
     type: String,
-    default: "#0F766E",
+    required: false,
   },
   is_active: {
     type: Boolean,
