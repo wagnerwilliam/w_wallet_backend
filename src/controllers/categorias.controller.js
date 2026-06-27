@@ -11,7 +11,6 @@ export class CategoriasController {
 
       const resultado = await this._categoriasService.obtenerCategorias();
       return response.status(200).json(resultado);
-
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
@@ -38,6 +37,25 @@ export class CategoriasController {
     }
   };
 
+  editar = async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { name, type, color, user_id } = request.body;
+
+      // if (!name || !type || !user_id) {
+      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
+      // }
+
+      const resultado = await this._categoriasService.editarCategoria(
+        id,
+        request.body,
+      );
+      return response.sendStatus(204);
+    } catch (error) {
+      return response.status(500).json({ error: error.message });
+    }
+  };
+
   eliminar = async (request, response) => {
     try {
       const { id } = request.params;
@@ -45,10 +63,9 @@ export class CategoriasController {
       // if (!name || !type || !user_id) {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
-      
+
       await this._categoriasService.eliminarCategoria(id);
       return response.sendStatus(204);
-
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
