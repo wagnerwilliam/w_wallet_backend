@@ -12,8 +12,8 @@ export class CategoriasService {
           isConnected = true;
           return Categorias.find();
         })
-        .then(listaCategorias => ok(listaCategorias))
-        .catch(error => ko(error))
+        .then((listaCategorias) => ok(listaCategorias))
+        .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
             mongoose.disconnect();
@@ -31,8 +31,26 @@ export class CategoriasService {
           const nuevaCategoria = new Categorias(data);
           return nuevaCategoria.save();
         })
-        .then(categoriaGuardada => ok(categoriaGuardada))
-        .catch(error => ko(error))
+        .then((categoriaGuardada) => ok(categoriaGuardada))
+        .catch((error) => ko(error))
+        .finally(() => {
+          if (isConnected) {
+            mongoose.disconnect();
+          }
+        });
+    });
+  };
+
+  editarCategoria = (id, data) => {
+    return new Promise((ok, ko) => {
+      let isConnected = false;
+      connectDB()
+        .then(() => {
+          isConnected = true;
+          return Categorias.findByIdAndUpdate(id, data);
+        })
+        .then((categoriaEditada) => ok(categoriaEditada))
+        .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
             mongoose.disconnect();
@@ -49,8 +67,8 @@ export class CategoriasService {
           isConnected = true;
           return Categorias.findByIdAndDelete(id);
         })
-        .then(categoriaEliminada => ok(categoriaEliminada))
-        .catch(error => ko(error))
+        .then((categoriaEliminada) => ok(categoriaEliminada))
+        .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
             mongoose.disconnect();

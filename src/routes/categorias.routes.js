@@ -9,5 +9,6 @@ const categoriasController = new CategoriasController(categoriasService);
 router.get("/", categoriasController.obtener);
 router.post("/crear", categoriasController.crear);
 router.delete("/eliminar/:id", categoriasController.eliminar);
+router.patch("/editar/:id", categoriasController.editar);
 
 export default router;
