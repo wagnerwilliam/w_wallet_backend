@@ -1,6 +1,6 @@
-export class CategoriasController {
-  constructor(CategoriasService) {
-    this._categoriasService = CategoriasService;
+export class IngresosController {
+  constructor(IngresosService) {
+    this._ingresosService = IngresosService;
   }
 
   obtener = async (request, response) => {
@@ -9,8 +9,9 @@ export class CategoriasController {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
 
-      const resultado = await this._categoriasService.obtenerCategorias();
+      const resultado = await this._ingresosService.obtenerIngresos();
       return response.json(resultado);
+
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
@@ -18,20 +19,21 @@ export class CategoriasController {
 
   crear = async (request, response) => {
     try {
-      const { name, type, color, user_id } = request.body;
+      const { name, value, user_id, category_id } = request.body;
 
       // if (!name || !type || !user_id) {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
-
-      const resultado = await this._categoriasService.crearCategoria({
+      
+      const resultado = await this._ingresosService.crearIngreso({
         name,
-        type,
-        color,
+        value,
         user_id,
+        category_id,
       });
 
       return response.status(201).json(resultado);
+
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
@@ -40,13 +42,13 @@ export class CategoriasController {
   editar = async (request, response) => {
     try {
       const { id } = request.params;
-      const { name, type, color, user_id } = request.body;
+      const { name, value, muser_id, category_id } = request.body;
 
       // if (!name || !type || !user_id) {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
 
-      const resultado = await this._categoriasService.editarCategoria(
+      const resultado = await this._ingresosService.editarIngreso(
         id,
         request.body,
       );
@@ -64,7 +66,7 @@ export class CategoriasController {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
 
-      await this._categoriasService.eliminarCategoria(id);
+      await this._ingresosService.eliminarIngreso(id);
       return response.sendStatus(204);
     } catch (error) {
       return response.status(500).json({ error: error.message });
