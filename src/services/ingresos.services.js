@@ -67,7 +67,7 @@ export class IngresosService {
           isConnected = true;
           return Ingresos.findByIdAndDelete(id);
         })
-        .then((ingresoEliminado) => ok(ingresoEliminado))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {

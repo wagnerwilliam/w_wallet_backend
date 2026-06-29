@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
-import { Categorias } from "../models/categorias.js";
 import { connectDB } from "../config/db_connection.js";
+import { Gastos } from "../models/gastos.js";
 
-export class CategoriasService {
-  obtenerCategorias = () => {
+export class GastosService {
+  obtenerGastos = () => {
     return new Promise((ok, ko) => {
       let isConnected = false;
 
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.find();
+          return Gastos.find();
         })
-        .then((listaCategorias) => ok(listaCategorias))
+        .then((listaGastos) => ok(listaGastos))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -22,16 +22,16 @@ export class CategoriasService {
     });
   };
 
-  crearCategoria = (data) => {
+  crearGasto = (data) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          const nuevaCategoria = new Categorias(data);
-          return nuevaCategoria.save();
+          const nuevoGasto = new Gastos(data);
+          return nuevoGasto.save();
         })
-        .then((categoriaGuardada) => ok(categoriaGuardada))
+        .then((gastoGuardado) => ok(gastoGuardado))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -41,15 +41,15 @@ export class CategoriasService {
     });
   };
 
-  editarCategoria = (id, data) => {
+  editarGasto = (id, data) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.findByIdAndUpdate(id, data);
+          return Gastos.findByIdAndUpdate(id, data);
         })
-        .then((categoriaEditada) => ok(categoriaEditada))
+        .then((gastoEditado) => ok(gastoEditado))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -59,13 +59,13 @@ export class CategoriasService {
     });
   };
 
-  eliminarCategoria = (id) => {
+  eliminarGasto = (id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.findByIdAndDelete(id);
+          return Gastos.findByIdAndDelete(id);
         })
         .then((response) => ok(response))
         .catch((error) => ko(error))
