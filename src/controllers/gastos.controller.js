@@ -1,6 +1,6 @@
-export class IngresosController {
-  constructor(IngresosService) {
-    this._ingresosService = IngresosService;
+export class GastosController {
+  constructor(GastosService) {
+    this._gastosService = GastosService;
   }
 
   obtener = async (request, response) => {
@@ -9,7 +9,7 @@ export class IngresosController {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
 
-      const resultado = await this._ingresosService.obtenerIngresos();
+      const resultado = await this._gastosService.obtenerGastos();
       return response.json(resultado);
     } catch (error) {
       return response.status(500).json({ error: error.message });
@@ -24,7 +24,7 @@ export class IngresosController {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
 
-      const resultado = await this._ingresosService.crearIngreso({
+      const resultado = await this._gastosService.crearGasto({
         name,
         value,
         user_id,
@@ -46,10 +46,7 @@ export class IngresosController {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
 
-      const resultado = await this._ingresosService.editarIngreso(
-        id,
-        request.body,
-      );
+      const resultado = await this._gastosService.editarGasto(id, request.body);
       return response.sendStatus(204);
     } catch (error) {
       return response.status(500).json({ error: error.message });
@@ -64,7 +61,7 @@ export class IngresosController {
       //     return res.status(400).json({ error: "Faltan campos obligatorios" });
       // }
 
-      await this._ingresosService.eliminarIngreso(id);
+      await this._gastosService.eliminarGasto(id);
       return response.sendStatus(204);
     } catch (error) {
       return response.status(500).json({ error: error.message });
