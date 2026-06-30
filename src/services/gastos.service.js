@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 import { connectDB } from "../config/db_connection.js";
 import { Gastos } from "../models/gastos.js";
 
+/**
+ * Servicio encargado de gestionar todas las operaciones CRUD
+ * relacionadas con la colección de Gastos en la base de datos.
+ *
+ * Este servicio maneja explícitamente la conexión y desconexión
+ * a MongoDB por cada operación para asegurar control de recursos.
+ */
+
 export class GastosService {
   obtenerGastos = () => {
     return new Promise((ok, ko) => {
@@ -12,7 +20,7 @@ export class GastosService {
           isConnected = true;
           return Gastos.find();
         })
-        .then((listaGastos) => ok(listaGastos))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -31,7 +39,7 @@ export class GastosService {
           const nuevoGasto = new Gastos(data);
           return nuevoGasto.save();
         })
-        .then((gastoGuardado) => ok(gastoGuardado))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -47,9 +55,9 @@ export class GastosService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Gastos.findByIdAndUpdate(id, data);
+          return Gastos.updateOne({ _id: id }, { $set: data });
         })
-        .then((gastoEditado) => ok(gastoEditado))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -65,9 +73,9 @@ export class GastosService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Gastos.findByIdAndDelete(id);
+          return Gastos.deleteOne({ _id: id });
         })
-        .then((response) => ok(response))
+        .then((response) => ok(response.deletedCount))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {

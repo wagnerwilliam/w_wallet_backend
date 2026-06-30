@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 import { Ingresos } from "../models/ingresos.js";
 import { connectDB } from "../config/db_connection.js";
 
+/**
+ * Servicio encargado de gestionar operaciones CRUD de Ingresos.
+ * Maneja conexión directa con MongoDB mediante Mongoose.
+ */
+
 export class IngresosService {
   obtenerIngresos = () => {
     return new Promise((ok, ko) => {
@@ -12,7 +17,7 @@ export class IngresosService {
           isConnected = true;
           return Ingresos.find();
         })
-        .then((listaIngresos) => ok(listaIngresos))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -31,7 +36,7 @@ export class IngresosService {
           const nuevaIngreso = new Ingresos(data);
           return nuevaIngreso.save();
         })
-        .then((ingresoGuardado) => ok(ingresoGuardado))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -47,9 +52,9 @@ export class IngresosService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Ingresos.findByIdAndUpdate(id, data);
+          return Ingresos.updateOne({ _id: id }, { $set: data });
         })
-        .then((ingresoEditado) => ok(ingresoEditado))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -65,9 +70,9 @@ export class IngresosService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Ingresos.findByIdAndDelete(id);
+          return Ingresos.deleteOne({ _id: id });
         })
-        .then((response) => ok(response))
+        .then((response) => ok(response.deletedCount))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {

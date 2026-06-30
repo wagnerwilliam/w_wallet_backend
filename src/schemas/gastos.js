@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+/**
+ * Schema de Mongoose para Gastos.
+ *
+ * Representa los registros de gastos realizados por un usuario.
+ * Cada gasto pertenece a una categoría y contiene información de valor y estado.
+ */
+
 export const gastosSchema = Schema({
   name: {
     type: String,

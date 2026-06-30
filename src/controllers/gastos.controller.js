@@ -1,14 +1,23 @@
+import { validateOrThrow } from "../validations/validationHelper.js";
+
+/**
+ * Controlador de Gastos.
+ *
+ * Responsabilidad:
+ * - Gestionar endpoints de gastos (CRUD)
+ * - Validar datos de entrada usando la capa de validaciones
+ * - Delegar lógica de negocio al service
+ * - Manejar respuestas HTTP y errores
+ */
+
 export class GastosController {
-  constructor(GastosService) {
+  constructor(GastosService, GastosValidations) {
     this._gastosService = GastosService;
+    this._gastosValidations = GastosValidations;
   }
 
   obtener = async (request, response) => {
     try {
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
-
       const resultado = await this._gastosService.obtenerGastos();
       return response.json(resultado);
     } catch (error) {
@@ -16,55 +25,56 @@ export class GastosController {
     }
   };
 
-  crear = async (request, response) => {
+  crear = async (request, response, next) => {
     try {
-      const { name, value, user_id, category_id } = request.body;
+      validateOrThrow(this._gastosValidations.validateCreateData(request.body));
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
-
-      const resultado = await this._gastosService.crearGasto({
-        name,
-        value,
-        user_id,
-        category_id,
-      });
+      const resultado = await this._gastosService.crearGasto(request.body);
 
       return response.status(201).json(resultado);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 
-  editar = async (request, response) => {
+  editar = async (request, response, next) => {
     try {
       const { id } = request.params;
-      const { name, value, user_id, category_id } = request.body;
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
+      validateOrThrow(
+        this._gastosValidations.validateUpdateData(id, request.body),
+      );
 
-      const resultado = await this._gastosService.editarGasto(id, request.body);
+      let { matchedCount } = await this._gastosService.editarGasto(
+        id,
+        request.body,
+      );
+
+      if (!matchedCount) {
+        return next();
+      }
+
       return response.sendStatus(204);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 
-  eliminar = async (request, response) => {
+  eliminar = async (request, response, next) => {
     try {
       const { id } = request.params;
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
+      validateOrThrow(this._gastosValidations.validateDeleteData(id));
 
-      await this._gastosService.eliminarGasto(id);
+      let gasto = await this._gastosService.eliminarGasto(id);
+
+      if (!gasto) {
+        return next();
+      }
+
       return response.sendStatus(204);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 }
