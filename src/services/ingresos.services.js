@@ -52,7 +52,10 @@ export class IngresosService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Ingresos.updateOne({ _id: id }, { $set: data });
+          return Ingresos.updateOne(
+            { _id: id }, 
+            { $set: { ...data, updated_at: new Date() } },
+          );
         })
         .then((response) => ok(response))
         .catch((error) => ko(error))
