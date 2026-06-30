@@ -59,7 +59,10 @@ export class CategoriasService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.updateOne({ _id: id }, { $set: data });
+          return Categorias.updateOne(
+            { _id: id },
+            { $set: { ...data, updated_at: new Date() } },
+          );
         })
         .then((response) => ok(response))
         .catch((error) => ko(error))

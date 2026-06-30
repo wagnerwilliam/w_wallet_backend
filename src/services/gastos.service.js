@@ -14,7 +14,6 @@ export class GastosService {
   obtenerGastos = () => {
     return new Promise((ok, ko) => {
       let isConnected = false;
-
       connectDB()
         .then(() => {
           isConnected = true;
@@ -55,7 +54,10 @@ export class GastosService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Gastos.updateOne({ _id: id }, { $set: data });
+          return Gastos.updateOne(
+            { _id: id }, 
+            { $set: { ...data, updated_at: new Date() } },
+          );
         })
         .then((response) => ok(response))
         .catch((error) => ko(error))
