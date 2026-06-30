@@ -2,6 +2,18 @@ import mongoose from "mongoose";
 import { Categorias } from "../models/categorias.js";
 import { connectDB } from "../config/db_connection.js";
 
+/**
+ * Servicio encargado de manejar todas las operaciones
+ * relacionadas con la colección "Categorias" en MongoDB.
+ *
+ * Responsabilidades:
+ * - Conectar a la base de datos
+ * - Ejecutar operaciones CRUD
+ * - Retornar resultados o errores al controlador
+ *
+ * Nota: Cada método abre y cierra la conexión a MongoDB
+ * para evitar conexiones persistentes innecesarias.
+ */
 export class CategoriasService {
   obtenerCategorias = () => {
     return new Promise((ok, ko) => {
@@ -12,7 +24,7 @@ export class CategoriasService {
           isConnected = true;
           return Categorias.find();
         })
-        .then((listaCategorias) => ok(listaCategorias))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -31,7 +43,7 @@ export class CategoriasService {
           const nuevaCategoria = new Categorias(data);
           return nuevaCategoria.save();
         })
-        .then((categoriaGuardada) => ok(categoriaGuardada))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -47,9 +59,9 @@ export class CategoriasService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.findByIdAndUpdate(id, data);
+          return Categorias.updateOne({ _id: id }, { $set: data });
         })
-        .then((categoriaEditada) => ok(categoriaEditada))
+        .then((response) => ok(response))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -65,9 +77,9 @@ export class CategoriasService {
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.findByIdAndDelete(id);
+          return Categorias.deleteOne({ _id: id });
         })
-        .then((response) => ok(response))
+        .then((response) => ok(response.deletedCount))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {

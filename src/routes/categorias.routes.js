@@ -1,10 +1,15 @@
 import { Router } from "express";
 import { CategoriasController } from "../controllers/categorias.controller.js";
 import { CategoriasService } from "../services/categorias.services.js";
+import { CategoriasValidations } from "../validations/categorias.js";
 
 const router = Router();
 const categoriasService = new CategoriasService();
-const categoriasController = new CategoriasController(categoriasService);
+const categoriasValidations = new CategoriasValidations();
+const categoriasController = new CategoriasController(
+  categoriasService,
+  categoriasValidations,
+);
 
 router.get("/", categoriasController.obtener);
 router.post("/crear", categoriasController.crear);

@@ -1,10 +1,15 @@
 import { Router } from "express";
 import { IngresosController } from "../controllers/ingresos.controller.js";
 import { IngresosService } from "../services/ingresos.services.js";
+import { IngresosValidations } from "../validations/ingresos.js";
 
 const router = Router();
 const ingresoService = new IngresosService();
-const ingresoController = new IngresosController(ingresoService);
+const ingresoValidations = new IngresosValidations();
+const ingresoController = new IngresosController(
+  ingresoService,
+  ingresoValidations,
+);
 
 router.get("/", ingresoController.obtener);
 router.post("/crear", ingresoController.crear);

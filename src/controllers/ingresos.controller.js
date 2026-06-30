@@ -1,14 +1,23 @@
+import { validateOrThrow } from "../validations/validationHelper.js";
+
+/**
+ * Controlador de Ingresos.
+ *
+ * Responsabilidad:
+ * - Manejar endpoints CRUD de ingresos
+ * - Validar datos de entrada mediante capa de validaciones
+ * - Delegar lógica de negocio al service
+ * - Gestionar respuestas HTTP y errores
+ */
+
 export class IngresosController {
-  constructor(IngresosService) {
+  constructor(IngresosService, IngresoValidations) {
     this._ingresosService = IngresosService;
+    this._ingresoValidations = IngresoValidations;
   }
 
   obtener = async (request, response) => {
     try {
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
-
       const resultado = await this._ingresosService.obtenerIngresos();
       return response.json(resultado);
     } catch (error) {
@@ -16,58 +25,58 @@ export class IngresosController {
     }
   };
 
-  crear = async (request, response) => {
+  crear = async (request, response, next) => {
     try {
-      const { name, value, user_id, category_id } = request.body;
+      validateOrThrow(
+        this._ingresoValidations.validateCreateData(request.body),
+      );
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
-
-      const resultado = await this._ingresosService.crearIngreso({
-        name,
-        value,
-        user_id,
-        category_id,
-      });
+      const resultado = await this._ingresosService.crearIngreso(request.body);
 
       return response.status(201).json(resultado);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 
-  editar = async (request, response) => {
+  editar = async (request, response, next) => {
     try {
       const { id } = request.params;
-      const { name, value, user_id, category_id } = request.body;
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
+      validateOrThrow(
+        this._ingresoValidations.validateUpdateData(id, request.body),
+      );
 
-      const resultado = await this._ingresosService.editarIngreso(
+      let { matchedCount } = await this._ingresosService.editarIngreso(
         id,
         request.body,
       );
+
+      if (!matchedCount) {
+        return next();
+      }
+
       return response.sendStatus(204);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 
-  eliminar = async (request, response) => {
+  eliminar = async (request, response, next) => {
     try {
       const { id } = request.params;
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
+      validateOrThrow(this._ingresoValidations.validateDeleteData(id));
 
-      await this._ingresosService.eliminarIngreso(id);
+      let ingreso = await this._ingresosService.eliminarIngreso(id);
+
+      if (!ingreso) {
+        return next();
+      }
+
       return response.sendStatus(204);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 }

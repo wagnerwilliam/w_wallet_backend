@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+/**
+ * Schema de Mongoose para Categorías.
+ *
+ * Representa las categorías utilizadas para clasificar ingresos y gastos.
+ * Cada categoría pertenece a un usuario y puede estar activa o inactiva.
+ */
+
 export const categoriasSchema = Schema({
   name: {
     type: String,

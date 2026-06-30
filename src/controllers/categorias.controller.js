@@ -1,8 +1,24 @@
-import { crearCategoriaValidation } from "../validators/categorias.validators.js";
+import { validateOrThrow } from "../validations/validationHelper.js";
+
+/**
+ * Controlador encargado de manejar las peticiones HTTP
+ * relacionadas con "Categorias".
+ *
+ * Responsabilidades:
+ * - Recibir requests HTTP
+ * - Validar datos de entrada mediante CategoriasValidations
+ * - Delegar lógica al service (CategoriasService)
+ * - Manejar respuestas HTTP y errores
+ *
+ * Nota:
+ * Este controlador no contiene lógica de negocio,
+ * solo orquesta validación + servicio + respuesta.
+ */
 
 export class CategoriasController {
-  constructor(CategoriasService) {
+  constructor(CategoriasService, CategoriasValidations) {
     this._categoriasService = CategoriasService;
+    this._categoriasValidations = CategoriasValidations;
   }
 
   obtener = async (request, response) => {
@@ -16,96 +32,58 @@ export class CategoriasController {
 
   crear = async (request, response, next) => {
     try {
-      const validacion = crearCategoriaValidation(request.body);
+      validateOrThrow(
+        this._categoriasValidations.validateCreateData(request.body),
+      );
 
-      if (!validacion.isValid) {
-        const errorValidacion = new Error(
-          "Errores de validación en el formulario",
-        );
-        errorValidacion.status = 400; // Definimos que es un error de cliente
-        errorValidacion.detalles = validacion.errors; // Adjuntamos los mensajes
-
-        return next(errorValidacion); // Redirige al middleware global e interrumpe el código
-      }
-
-      let { name, type, color, user_id } = request.body;
-
-      let resultado = await this._categoriasService.crearCategoria({
-        name,
-        type,
-        color,
-        user_id,
-      });
+      let resultado = await this._categoriasService.crearCategoria(
+        request.body,
+      );
 
       return response.status(201).json(resultado);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 
-  // server.post("/nuevo", async (request, response, next) => {
-
-  //   //asegurar que r, g, b estan presentes en request.body
-  //   //asegurar que r, g, b son enteros entre 0 y 255
-  //   //en caso de error next(true)
-
-  //   let { r, g, b } = request.body;
-  //   let rgb = [r,g,b];
-  //   let i = 0;
-  //   let valido = true;
-
-  //   while (valido && i < rgb.length) {
-  //       valido = /^\d{1,3}$/.test(rgb[i]) && Number(rgb[i]) <= 255;
-  //       i++;
-  //   }
-
-  //   if (!valido) {
-  //       return next(true)
-  //   }
-
-  //   try {
-  //       let _id = await crearColor({r, g, b, user_id: request.user});
-  //       response.status(201);
-  //       response.json({ _id });
-
-  //   } catch (error) {
-  //       response.status(500);
-  //       response.json({ error: "error en el servidor" });
-  //   }
-
-  // });
-
-  editar = async (request, response) => {
+  editar = async (request, response, next) => {
     try {
       const { id } = request.params;
-      const { name, type, color, user_id } = request.body;
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
+      validateOrThrow(
+        this._categoriasValidations.validateUpdateData(id, request.body),
+      );
 
-      const resultado = await this._categoriasService.editarCategoria(
+      let { matchedCount } = await this._categoriasService.editarCategoria(
         id,
         request.body,
       );
+
+      if (!matchedCount) {
+        return next();
+      }
+
       return response.sendStatus(204);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 
-  eliminar = async (request, response) => {
+  eliminar = async (request, response, next) => {
     try {
       const { id } = request.params;
 
-      // if (!name || !type || !user_id) {
-      //     return res.status(400).json({ error: "Faltan campos obligatorios" });
-      // }
+      validateOrThrow(this._categoriasValidations.validateDeleteData(id));
 
-      await this._categoriasService.eliminarCategoria(id);
+      let categoria = await this._categoriasService.eliminarCategoria(id);
+
+      if (!categoria) {
+        return next();
+      }
+
       return response.sendStatus(204);
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 }

@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+/**
+ * Schema de Mongoose para Ingresos.
+ *
+ * Representa los ingresos registrados por un usuario dentro del sistema financiero.
+ * Cada ingreso pertenece a una categoría y contiene información de valor, estado y auditoría.
+ */
+
 export const ingresosSchema = Schema({
   name: {
     type: String,
