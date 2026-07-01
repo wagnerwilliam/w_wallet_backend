@@ -44,7 +44,7 @@ export class UsuariosValidations {
     const errors = {};
 
     if (username) {
-      errors.username = ["Username ya registrado"];
+      errors.username = ["Usuario ya registrado"];
     }
 
     if (email) {
@@ -56,4 +56,21 @@ export class UsuariosValidations {
       errors,
     };
   }
+
+  validateRequiredFields = ({ username, password }) => {
+    const errors = {};
+
+    if (!username) {
+      errors.username = ["Username es obligatorio"];
+    }
+
+    if (!password) {
+      errors.password = ["Password es obligatorio"];
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors,
+    };
+  };
 }

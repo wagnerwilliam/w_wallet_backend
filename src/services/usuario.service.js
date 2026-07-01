@@ -32,12 +32,7 @@ export class UsuariosService {
             $or: [{ email }, { username }],
           });
         })
-        .then((usuario) => {
-          ok({
-            email: usuario?.email === email,
-            username: usuario?.username === username,
-          });
-        })
+        .then((usuario) => ok(usuario))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {

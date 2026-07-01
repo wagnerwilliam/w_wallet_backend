@@ -7,14 +7,17 @@ export class AuthController {
     this._usuriosValidations = UsuriosValidations;
   }
 
-  // login = async (request, response) => {
-  //   try {
-  //     const resultado = await this._gastosService.obtenerGastos();
-  //     return response.json(resultado);
-  //   } catch (error) {
-  //     return response.status(500).json({ error: error.message });
-  //   }
-  // };
+  login = async (request, response) => {
+    try {
+      validateOrThrow(this._usuriosValidations.validateRequiredFields(data));
+
+      const resultado = await this._usuariosService.checkExists(data);
+
+      return response.json(resultado);
+    } catch (error) {
+      return response.status(500).json({ error: error.message });
+    }
+  };
 
   register = async (request, response, next) => {
     try {
@@ -24,7 +27,8 @@ export class AuthController {
 
       const existe = await this._usuariosService.checkExists(data);
 
-      validateOrThrow(this._usuriosValidations.validateUniqueFields(existe));
+      if (existe)
+        validateOrThrow(this._usuriosValidations.validateUniqueFields(existe));
 
       // Considerar agregar a un servicio de Auth
       data.password = await bcrypt.hash(data.password, 10);
