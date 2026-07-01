@@ -43,7 +43,7 @@ export const ingresosSchema = Schema({
         ahora.getHours(),
         ahora.getMinutes(),
         ahora.getSeconds(),
-        ahora.getMilliseconds()
+        ahora.getMilliseconds(),
       );
 
       return fecha;
