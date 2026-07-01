@@ -55,7 +55,7 @@ export class GastosService {
         .then(() => {
           isConnected = true;
           return Gastos.updateOne(
-            { _id: id }, 
+            { _id: id },
             { $set: { ...data, updated_at: new Date() } },
           );
         })

@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
-import categoriasRouter from "./src/routes/categorias.routes.js";
+import categoriasRouter from "./src/routes/categorias.route.js";
 import ingresosRouter from "./src/routes/ingresos.route.js";
 import gastosRouter from "./src/routes/gastos.route.js";
+import authRouter from "./src/routes/auth.route.js";
+
 import {
   globalMiddleware,
   globalMiddlewareNotFound,
@@ -12,6 +14,8 @@ const server = express();
 
 server.use(express.json());
 server.use(cors());
+
+server.use("/api/auth", authRouter);
 
 server.use("/api/ingresos", ingresosRouter);
 server.use("/api/gastos", gastosRouter);

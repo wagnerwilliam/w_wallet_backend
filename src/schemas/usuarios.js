@@ -1,34 +1,43 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
 
-/**
- * Schema de Mongoose para Gastos.
- *
- * Representa los registros de gastos realizados por un usuario.
- * Cada gasto pertenece a una categoría y contiene información de valor y estado.
- */
-
-export const gastosSchema = Schema({
-  name: {
+export const usuariosSchema = mongoose.Schema({
+  full_name: {
+    type: String,
+    required: false,
+    trim: true,
+    minlength: 3,
+    maxlength: 100,
+  },
+  birth_date: {
+    type: Date,
+    required: false,
+  },
+  email: {
+    //va
     type: String,
     required: true,
+    unique: true,
+    lowercase: true,
     trim: true,
   },
-  value: {
-    type: Number,
+  username: {
+    //va
+    type: String,
     required: true,
+    unique: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 30,
+  },
+  password: {
+    //va
+    type: String,
+    required: true,
+    select: false,
   },
   is_active: {
     type: Boolean,
     default: true,
-  },
-  user_id: {
-    type: String,
-    required: true,
-  },
-  category_id: {
-    type: String,
-    required: true,
   },
   created_at: {
     type: Date,
@@ -49,7 +58,6 @@ export const gastosSchema = Schema({
       return fecha;
     },
   },
-
   updated_at: {
     type: Date,
   },

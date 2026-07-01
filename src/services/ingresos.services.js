@@ -53,7 +53,7 @@ export class IngresosService {
         .then(() => {
           isConnected = true;
           return Ingresos.updateOne(
-            { _id: id }, 
+            { _id: id },
             { $set: { ...data, updated_at: new Date() } },
           );
         })
