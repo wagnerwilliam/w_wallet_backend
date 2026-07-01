@@ -44,7 +44,7 @@ export class UsuariosValidations {
     const errors = {};
 
     if (username) {
-      error.username = ["Username ya registrado"];
+      errors.username = ["Username ya registrado"];
     }
 
     if (email) {
