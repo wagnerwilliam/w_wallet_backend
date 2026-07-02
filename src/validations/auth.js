@@ -9,7 +9,7 @@ export class AuthValidations {
     const isValid = await bcrypt.compare(password, usuario.password);
 
     if (!isValid) {
-      errors.auth = ["Usuario o contraseña incorrectos"];
+      errors.password = ["Usuario o contraseña incorrectos"];
     }
 
     return {

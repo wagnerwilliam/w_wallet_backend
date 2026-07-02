@@ -11,6 +11,8 @@ export class AuthController {
 
   login = async (request, response, next) => {
     try {
+      //Considerar agregar un modelo para token en lista negra por seguridad y agregar un middleware global que verifique si este token
+      // esta en lista negra.
       let data = request.body;
 
       //valida datos enviados
