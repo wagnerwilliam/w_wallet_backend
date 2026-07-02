@@ -10,7 +10,7 @@ export const validateOrThrow = (validation) => {
   if (validation.isValid) return;
 
   const error = new Error("Errores de validación en el formulario");
-  error.status = 400;
+  error.status = validation.status ? validation.status : 400;
   error.details = validation.errors;
   throw error;
 };

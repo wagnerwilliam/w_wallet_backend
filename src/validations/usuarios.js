@@ -13,7 +13,19 @@ export class UsuariosValidations {
     }
   };
 
-  validateUpdateData(id, data) {}
+  validateUserExists({ usuario }) {
+    const errors = {};
+
+    if (!usuario) {
+      errors.auth = ["Usuario o contraseña incorrectos"];
+    }
+
+    return {
+      status: 401,
+      isValid: Object.keys(errors).length === 0,
+      errors,
+    };
+  }
 
   validateCreateData({ username, email, password }) {
     const errors = {};
@@ -52,6 +64,7 @@ export class UsuariosValidations {
     }
 
     return {
+      status: 409,
       isValid: Object.keys(errors).length === 0,
       errors,
     };
@@ -60,12 +73,16 @@ export class UsuariosValidations {
   validateRequiredFields = ({ username, password }) => {
     const errors = {};
 
-    if (!username) {
-      errors.username = ["Username es obligatorio"];
+    if (!username || !USERNAME_REGEX.test(username.trim())) {
+      errors.username = [
+        "El usuario es obligatorio y solo puede contener letras, números y espacios.",
+      ];
     }
 
-    if (!password) {
-      errors.password = ["Password es obligatorio"];
+    if (!password || !PASSWORD_REGEX.test(password)) {
+      errors.password = [
+        "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.",
+      ];
     }
 
     return {

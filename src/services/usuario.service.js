@@ -30,9 +30,15 @@ export class UsuariosService {
           isConnected = true;
           return Usuarios.findOne({
             $or: [{ email }, { username }],
+          }).select("+password");
+        })
+        .then((usuario) => {
+          ok({
+            usuario,
+            email: usuario?.email === email,
+            username: usuario?.username === username,
           });
         })
-        .then((usuario) => ok(usuario))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {

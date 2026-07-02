@@ -1,21 +1,41 @@
 import { validateOrThrow } from "../validations/validationHelper.js";
+import { signToken } from "../utils/auth.js";
+import { authorizationMiddleware } from "../middlewares/global.js";
 import bcrypt from "bcrypt";
 
 export class AuthController {
-  constructor(UsuarioService, UsuriosValidations) {
+  constructor(UsuarioService, UsuriosValidations, AuthValidations) {
     this._usuariosService = UsuarioService;
-    this._usuriosValidations = UsuriosValidations;
+    this._usuariosValidations = UsuriosValidations;
+    this._authValidations = AuthValidations;
   }
 
-  login = async (request, response) => {
+  login = async (request, response, next) => {
     try {
-      validateOrThrow(this._usuriosValidations.validateRequiredFields(data));
+      let data = request.body;
 
+      //valida datos enviados
+      validateOrThrow(this._usuariosValidations.validateRequiredFields(data));
+
+      //obtiene usuario registrado
       const resultado = await this._usuariosService.checkExists(data);
 
-      return response.json(resultado);
+      //si el el usuario no existe devuelve 401
+      validateOrThrow(this._usuariosValidations.validateUserExists(resultado));
+
+      //si el ususario existe pero la contraseña es incorrecta devuelve 403
+      validateOrThrow(
+        await this._authValidations.comparePassword(
+          data.password,
+          resultado.usuario,
+        ),
+      );
+
+      let token = signToken(resultado.usuario);
+
+      return response.json({ token });
     } catch (error) {
-      return response.status(500).json({ error: error.message });
+      return next(error);
     }
   };
 
@@ -23,12 +43,12 @@ export class AuthController {
     try {
       let data = request.body;
 
-      validateOrThrow(this._usuriosValidations.validateCreateData(data));
+      validateOrThrow(this._usuariosValidations.validateCreateData(data));
 
       const existe = await this._usuariosService.checkExists(data);
 
       if (existe)
-        validateOrThrow(this._usuriosValidations.validateUniqueFields(existe));
+        validateOrThrow(this._usuariosValidations.validateUniqueFields(existe));
 
       // Considerar agregar a un servicio de Auth
       data.password = await bcrypt.hash(data.password, 10);
@@ -41,26 +61,12 @@ export class AuthController {
     }
   };
 
-  // logout = async (request, response, next) => {
-  //   try {
-  //     const { id } = request.params;
-
-  //     validateOrThrow(
-  //       this._gastosValidations.validateUpdateData(id, request.body),
-  //     );
-
-  //     let { matchedCount } = await this._gastosService.editarGasto(
-  //       id,
-  //       request.body,
-  //     );
-
-  //     if (!matchedCount) {
-  //       return next();
-  //     }
-
-  //     return response.sendStatus(204);
-  //   } catch (error) {
-  //     return next(error);
-  //   }
-  // };
+  logout = async (request, response, next) => {
+    //validar opcion de refresh token.
+    try {
+      return response.sendStatus(204);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
