@@ -11,7 +11,7 @@ export const globalMiddleware = (error, request, response, next) => {
 
   response.status(statusCode).json({
     error: error.message || "Error interno del servidor",
-    detalles: error.details || null,
+    details: error.details || null,
   });
 };
 

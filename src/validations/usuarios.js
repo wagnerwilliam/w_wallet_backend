@@ -17,7 +17,7 @@ export class UsuariosValidations {
     const errors = {};
 
     if (!usuario) {
-      errors.auth = ["Usuario o contraseña incorrectos"];
+      errors.password = ["Usuario o contraseña incorrectos"];
     }
 
     return {
