@@ -18,7 +18,8 @@ export class IngresosController {
 
   obtener = async (request, response) => {
     try {
-      const resultado = await this._ingresosService.obtenerIngresos();
+      let { user_id } = request;
+      const resultado = await this._ingresosService.obtenerIngresos(user_id);
       return response.json(resultado);
     } catch (error) {
       return response.status(500).json({ error: error.message });
@@ -27,11 +28,16 @@ export class IngresosController {
 
   crear = async (request, response, next) => {
     try {
+      let { user_id } = request;
+
       validateOrThrow(
         this._ingresoValidations.validateCreateData(request.body),
       );
 
-      const resultado = await this._ingresosService.crearIngreso(request.body);
+      const resultado = await this._ingresosService.crearIngreso({
+        ...request.body,
+        user_id,
+      });
 
       return response.status(201).json(resultado);
     } catch (error) {
@@ -41,6 +47,7 @@ export class IngresosController {
 
   editar = async (request, response, next) => {
     try {
+      const { user_id } = request;
       const { id } = request.params;
 
       validateOrThrow(
@@ -50,6 +57,7 @@ export class IngresosController {
       let { matchedCount } = await this._ingresosService.editarIngreso(
         id,
         request.body,
+        user_id,
       );
 
       if (!matchedCount) {
@@ -64,11 +72,12 @@ export class IngresosController {
 
   eliminar = async (request, response, next) => {
     try {
+      const { user_id } = request;
       const { id } = request.params;
 
       validateOrThrow(this._ingresoValidations.validateDeleteData(id));
 
-      let ingreso = await this._ingresosService.eliminarIngreso(id);
+      let ingreso = await this._ingresosService.eliminarIngreso(id, user_id);
 
       if (!ingreso) {
         return next();

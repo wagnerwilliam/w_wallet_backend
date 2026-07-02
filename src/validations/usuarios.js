@@ -3,6 +3,7 @@
  */
 
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,30}$/;
+const OBJECT_ID_REGEX = /^[0-9a-f]{24}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 

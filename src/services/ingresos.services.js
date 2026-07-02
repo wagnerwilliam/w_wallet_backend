@@ -8,14 +8,14 @@ import { connectDB } from "../config/db_connection.js";
  */
 
 export class IngresosService {
-  obtenerIngresos = () => {
+  obtenerIngresos = (user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
 
       connectDB()
         .then(() => {
           isConnected = true;
-          return Ingresos.find();
+          return Ingresos.find({ user_id });
         })
         .then((response) => ok(response))
         .catch((error) => ko(error))
@@ -46,14 +46,14 @@ export class IngresosService {
     });
   };
 
-  editarIngreso = (id, data) => {
+  editarIngreso = (id, data, user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
           return Ingresos.updateOne(
-            { _id: id },
+            { _id: id, user_id },
             { $set: { ...data, updated_at: new Date() } },
           );
         })
@@ -67,13 +67,13 @@ export class IngresosService {
     });
   };
 
-  eliminarIngreso = (id) => {
+  eliminarIngreso = (id, user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          return Ingresos.deleteOne({ _id: id });
+          return Ingresos.deleteOne({ _id: id, user_id });
         })
         .then((response) => ok(response.deletedCount))
         .catch((error) => ko(error))

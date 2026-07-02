@@ -1,6 +1,5 @@
 import { validateOrThrow } from "../validations/validationHelper.js";
 import { signToken } from "../utils/auth.js";
-import { authorizationMiddleware } from "../middlewares/global.js";
 import bcrypt from "bcrypt";
 
 export class AuthController {

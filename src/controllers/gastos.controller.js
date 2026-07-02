@@ -18,7 +18,8 @@ export class GastosController {
 
   obtener = async (request, response) => {
     try {
-      const resultado = await this._gastosService.obtenerGastos();
+      let { user_id } = request;
+      const resultado = await this._gastosService.obtenerGastos(user_id);
       return response.json(resultado);
     } catch (error) {
       return response.status(500).json({ error: error.message });
@@ -27,9 +28,13 @@ export class GastosController {
 
   crear = async (request, response, next) => {
     try {
+      let { user_id } = request;
       validateOrThrow(this._gastosValidations.validateCreateData(request.body));
 
-      const resultado = await this._gastosService.crearGasto(request.body);
+      const resultado = await this._gastosService.crearGasto({
+        ...request.body,
+        user_id,
+      });
 
       return response.status(201).json(resultado);
     } catch (error) {
@@ -39,6 +44,7 @@ export class GastosController {
 
   editar = async (request, response, next) => {
     try {
+      let { user_id } = request;
       const { id } = request.params;
 
       validateOrThrow(
@@ -48,6 +54,7 @@ export class GastosController {
       let { matchedCount } = await this._gastosService.editarGasto(
         id,
         request.body,
+        user_id,
       );
 
       if (!matchedCount) {
@@ -62,11 +69,12 @@ export class GastosController {
 
   eliminar = async (request, response, next) => {
     try {
+      let { user_id } = request;
       const { id } = request.params;
 
       validateOrThrow(this._gastosValidations.validateDeleteData(id));
 
-      let gasto = await this._gastosService.eliminarGasto(id);
+      let gasto = await this._gastosService.eliminarGasto(id, user_id);
 
       if (!gasto) {
         return next();

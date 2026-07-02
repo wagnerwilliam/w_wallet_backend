@@ -11,13 +11,13 @@ import { Gastos } from "../models/gastos.js";
  */
 
 export class GastosService {
-  obtenerGastos = () => {
+  obtenerGastos = (user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          return Gastos.find();
+          return Gastos.find({ user_id });
         })
         .then((response) => ok(response))
         .catch((error) => ko(error))
@@ -48,14 +48,14 @@ export class GastosService {
     });
   };
 
-  editarGasto = (id, data) => {
+  editarGasto = (id, data, user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
           return Gastos.updateOne(
-            { _id: id },
+            { _id: id, user_id },
             { $set: { ...data, updated_at: new Date() } },
           );
         })
@@ -69,13 +69,13 @@ export class GastosService {
     });
   };
 
-  eliminarGasto = (id) => {
+  eliminarGasto = (id, user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          return Gastos.deleteOne({ _id: id });
+          return Gastos.deleteOne({ _id: id, user_id });
         })
         .then((response) => ok(response.deletedCount))
         .catch((error) => ko(error))
