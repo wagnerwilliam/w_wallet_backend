@@ -3,6 +3,7 @@ import { AuthController } from "../controllers/auth.controller.js";
 import { UsuariosService } from "../services/usuario.service.js";
 import { UsuariosValidations } from "../validations/usuarios.js";
 import { AuthValidations } from "../validations/auth.js";
+import { authorizationMiddleware } from "../middlewares/global.js";
 
 const router = Router();
 
