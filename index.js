@@ -17,9 +17,10 @@ const server = express();
 server.use(express.json());
 server.use(cors());
 
+server.use(clientTokenMiddleware);
+
 server.use("/api/auth", authRouter);
 
-server.use(clientTokenMiddleware);
 server.use(authorizationMiddleware);
 
 server.use("/api/auth/logout", ingresosRouter);
