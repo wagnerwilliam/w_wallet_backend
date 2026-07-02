@@ -8,6 +8,8 @@ import authRouter from "./src/routes/auth.route.js";
 import {
   globalMiddleware,
   globalMiddlewareNotFound,
+  clientTokenMiddleware,
+  authorizationMiddleware,
 } from "./src/middlewares/global.js";
 
 const server = express();
@@ -17,6 +19,10 @@ server.use(cors());
 
 server.use("/api/auth", authRouter);
 
+server.use(clientTokenMiddleware);
+server.use(authorizationMiddleware);
+
+server.use("/api/auth/logout", ingresosRouter);
 server.use("/api/ingresos", ingresosRouter);
 server.use("/api/gastos", gastosRouter);
 server.use("/api/categorias", categoriasRouter);
