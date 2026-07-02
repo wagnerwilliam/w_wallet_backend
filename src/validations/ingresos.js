@@ -63,7 +63,7 @@ export class IngresosValidations {
 
   validateCreateData(data) {
     //Pendiente por validar created at
-    const { name, value, user_id, category_id } = data;
+    const { name, value, category_id } = data;
     const errors = {};
 
     if (!name || !NAME_REGEX.test(name.trim())) {
@@ -76,12 +76,6 @@ export class IngresosValidations {
       errors.value = ["El campo value es obligatorio"];
     } else if (!NUMBER_REGEX.test(String(value))) {
       errors.value = ["El campo value debe ser un número positivo válido"];
-    }
-
-    if (!user_id || !OBJECT_ID_REGEX.test(user_id)) {
-      errors.user_id = [
-        "El campo user_id es obligatorio y debe ser un Id válido",
-      ];
     }
 
     if (!category_id || !OBJECT_ID_REGEX.test(category_id)) {

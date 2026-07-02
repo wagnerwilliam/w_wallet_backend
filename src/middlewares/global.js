@@ -85,7 +85,7 @@ export const authorizationMiddleware = (request, response, next) => {
       });
     }
 
-    request.body.user_id = payload.id;
+    request.user_id = payload.id;
     next();
   });
 };

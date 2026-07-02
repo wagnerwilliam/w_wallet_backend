@@ -23,7 +23,9 @@ export class CategoriasController {
 
   obtener = async (request, response) => {
     try {
-      const resultado = await this._categoriasService.obtenerCategorias();
+      let { user_id } = request;
+      const resultado =
+        await this._categoriasService.obtenerCategorias(user_id);
       return response.json(resultado);
     } catch (error) {
       return response.status(500).json({ error: error.message });
@@ -32,13 +34,16 @@ export class CategoriasController {
 
   crear = async (request, response, next) => {
     try {
+      const { user_id } = request;
+
       validateOrThrow(
         this._categoriasValidations.validateCreateData(request.body),
       );
 
-      let resultado = await this._categoriasService.crearCategoria(
-        request.body,
-      );
+      let resultado = await this._categoriasService.crearCategoria({
+        ...request.body,
+        user_id,
+      });
 
       return response.status(201).json(resultado);
     } catch (error) {
@@ -48,6 +53,7 @@ export class CategoriasController {
 
   editar = async (request, response, next) => {
     try {
+      const { user_id } = request;
       const { id } = request.params;
 
       validateOrThrow(
@@ -57,6 +63,7 @@ export class CategoriasController {
       let { matchedCount } = await this._categoriasService.editarCategoria(
         id,
         request.body,
+        user_id,
       );
 
       if (!matchedCount) {
@@ -71,11 +78,15 @@ export class CategoriasController {
 
   eliminar = async (request, response, next) => {
     try {
+      const { user_id } = request;
       const { id } = request.params;
 
       validateOrThrow(this._categoriasValidations.validateDeleteData(id));
 
-      let categoria = await this._categoriasService.eliminarCategoria(id);
+      let categoria = await this._categoriasService.eliminarCategoria(
+        id,
+        user_id,
+      );
 
       if (!categoria) {
         return next();

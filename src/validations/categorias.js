@@ -61,7 +61,7 @@ export class CategoriasValidations {
   }
 
   validateCreateData(data) {
-    const { name, type, color, is_active, user_id } = data;
+    const { name, type, color, is_active } = data;
     const errors = {};
 
     if (!name || !NAME_REGEX.test(name.trim())) {
@@ -79,12 +79,6 @@ export class CategoriasValidations {
     if (is_active !== undefined && typeof is_active !== "boolean") {
       errors.is_active = [
         "El campo is_active debe ser un valor booleano (true o false)",
-      ];
-    }
-
-    if (!user_id || !OBJECT_ID_REGEX.test(user_id)) {
-      errors.user_id = [
-        "El campo user_id es obligatorio y debe ser un Id válido",
       ];
     }
 

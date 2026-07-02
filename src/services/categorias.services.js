@@ -15,14 +15,14 @@ import { connectDB } from "../config/db_connection.js";
  * para evitar conexiones persistentes innecesarias.
  */
 export class CategoriasService {
-  obtenerCategorias = () => {
+  obtenerCategorias = (user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
 
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.find();
+          return Categorias.find({ user_id });
         })
         .then((response) => ok(response))
         .catch((error) => ko(error))
@@ -53,14 +53,14 @@ export class CategoriasService {
     });
   };
 
-  editarCategoria = (id, data) => {
+  editarCategoria = (id, data, user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
           return Categorias.updateOne(
-            { _id: id },
+            { _id: id, user_id },
             { $set: { ...data, updated_at: new Date() } },
           );
         })
@@ -74,13 +74,13 @@ export class CategoriasService {
     });
   };
 
-  eliminarCategoria = (id) => {
+  eliminarCategoria = (id, user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          return Categorias.deleteOne({ _id: id });
+          return Categorias.deleteOne({ _id: id, user_id });
         })
         .then((response) => ok(response.deletedCount))
         .catch((error) => ko(error))
