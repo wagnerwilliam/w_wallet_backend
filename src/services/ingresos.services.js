@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Ingresos } from "../models/ingresos.js";
+import { Ingresos } from "../models/ingresos.model.js";
 import { connectDB } from "../config/db_connection.js";
 
 /**

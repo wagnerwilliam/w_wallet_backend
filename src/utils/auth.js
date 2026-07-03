@@ -1,7 +1,13 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+export const generateAccessToken = ({ _id }) => {
+  return jwt.sign({ sub: _id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
+  });
+};
 
-export const signToken = ({ _id }) => {
-  return jwt.sign({ id: _id }, JWT_SECRET_KEY /*{ expiresIn: "5m"}*/);
+export const generateRefreshToken = ({ _id }) => {
+  return jwt.sign({ sub: _id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+  });
 };

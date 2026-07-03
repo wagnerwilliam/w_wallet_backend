@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { connectDB } from "../config/db_connection.js";
-import { Gastos } from "../models/gastos.js";
+import { Gastos } from "../models/gastos.model.js";
 
 /**
  * Servicio encargado de gestionar todas las operaciones CRUD

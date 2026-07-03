@@ -1,18 +1,20 @@
 import mongoose from "mongoose";
 import { connectDB } from "../config/db_connection.js";
-import { Usuarios } from "../models/usuarios.model.js";
+import { Token } from "../models/token.model.js";
 
-export class UsuariosService {
-  registerUser = async (data) => {
+export class AuthService {
+  guardarToken = (data) => {
     return new Promise((ok, ko) => {
+      console.log(data);
+
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          const nuevoUsuario = new Usuarios(data);
-          return nuevoUsuario.save();
+          const nuevoRefreshToken = new Token(data);
+          return nuevoRefreshToken.save();
         })
-        .then((response) => ok(response))
+        .then((response) => ok(response.token))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {
@@ -22,23 +24,15 @@ export class UsuariosService {
     });
   };
 
-  checkExists = ({ email, username }) => {
+  eliminarToken = (token, user_id) => {
     return new Promise((ok, ko) => {
       let isConnected = false;
       connectDB()
         .then(() => {
           isConnected = true;
-          return Usuarios.findOne({
-            $or: [{ email }, { username }],
-          }).select("+password");
+          return Token.findOneAndDelete({ token, user_id });
         })
-        .then((usuario) => {
-          ok({
-            usuario,
-            email: usuario?.email === email,
-            username: usuario?.username === username,
-          });
-        })
+        .then((deletedToken) => ok(deletedToken))
         .catch((error) => ko(error))
         .finally(() => {
           if (isConnected) {

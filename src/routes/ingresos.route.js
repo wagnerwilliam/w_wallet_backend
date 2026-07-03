@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { IngresosController } from "../controllers/ingresos.controller.js";
 import { IngresosService } from "../services/ingresos.services.js";
-import { IngresosValidations } from "../validations/ingresos.js";
+import { IngresosValidations } from "../validations/ingresos.validation.js";
 
 const router = Router();
 const ingresoService = new IngresosService();

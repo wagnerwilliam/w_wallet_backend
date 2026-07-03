@@ -24,9 +24,9 @@ export class CategoriasController {
   obtener = async (request, response) => {
     try {
       let { user_id } = request;
-      const resultado =
+      const categorias =
         await this._categoriasService.obtenerCategorias(user_id);
-      return response.json(resultado);
+      return response.json(categorias);
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
@@ -40,12 +40,12 @@ export class CategoriasController {
         this._categoriasValidations.validateCreateData(request.body),
       );
 
-      let resultado = await this._categoriasService.crearCategoria({
+      let categoria = await this._categoriasService.crearCategoria({
         ...request.body,
         user_id,
       });
 
-      return response.status(201).json(resultado);
+      return response.status(201).json(categoria);
     } catch (error) {
       return next(error);
     }
@@ -83,13 +83,13 @@ export class CategoriasController {
 
       validateOrThrow(this._categoriasValidations.validateDeleteData(id));
 
-      let categoria = await this._categoriasService.eliminarCategoria(
+      let deletedCount = await this._categoriasService.eliminarCategoria(
         id,
         user_id,
       );
 
-      if (!categoria) {
-        return next();
+      if (!deletedCount) {
+        return response.error(404, `El Id: ${id} no existe.`);
       }
 
       return response.sendStatus(204);

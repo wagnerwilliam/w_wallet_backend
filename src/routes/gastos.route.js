@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { GastosController } from "../controllers/gastos.controller.js";
 import { GastosService } from "../services/gastos.service.js";
-import { GastosValidations } from "../validations/gastos.js";
+import { GastosValidations } from "../validations/gastos.validation.js";
 
 const router = Router();
 const gastosService = new GastosService();
