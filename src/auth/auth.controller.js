@@ -68,7 +68,7 @@ export class AuthController {
       await this._authService.eliminarToken(refreshToken, user_id);
 
       // generar nuevo acces token y refresh token
-      const accessToken = generateAccessToken({ _id: user_id });
+      const newAccessToken = generateAccessToken({ _id: user_id });
       const newRefreshToken = generateRefreshToken({ _id: user_id });
 
       ///guardar refresh token
