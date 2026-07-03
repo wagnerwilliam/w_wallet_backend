@@ -19,8 +19,8 @@ export class GastosController {
   obtener = async (request, response) => {
     try {
       let { user_id } = request;
-      const resultado = await this._gastosService.obtenerGastos(user_id);
-      return response.json(resultado);
+      const gastos = await this._gastosService.obtenerGastos(user_id);
+      return response.json(gastos);
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
@@ -31,12 +31,12 @@ export class GastosController {
       let { user_id } = request;
       validateOrThrow(this._gastosValidations.validateCreateData(request.body));
 
-      const resultado = await this._gastosService.crearGasto({
+      const gasto = await this._gastosService.crearGasto({
         ...request.body,
         user_id,
       });
 
-      return response.status(201).json(resultado);
+      return response.status(201).json(gasto);
     } catch (error) {
       return next(error);
     }
@@ -74,10 +74,10 @@ export class GastosController {
 
       validateOrThrow(this._gastosValidations.validateDeleteData(id));
 
-      let gasto = await this._gastosService.eliminarGasto(id, user_id);
+      let deletedCount = await this._gastosService.eliminarGasto(id, user_id);
 
-      if (!gasto) {
-        return next();
+      if (!deletedCount) {
+        return response.error(404, `El Id: ${id} no existe.`);
       }
 
       return response.sendStatus(204);

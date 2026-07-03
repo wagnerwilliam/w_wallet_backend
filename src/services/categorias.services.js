@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Categorias } from "../models/categorias.js";
+import { Categorias } from "../models/categorias.model.js";
 import { connectDB } from "../config/db_connection.js";
 
 /**

@@ -19,8 +19,8 @@ export class IngresosController {
   obtener = async (request, response) => {
     try {
       let { user_id } = request;
-      const resultado = await this._ingresosService.obtenerIngresos(user_id);
-      return response.json(resultado);
+      const ingresos = await this._ingresosService.obtenerIngresos(user_id);
+      return response.json(ingresos);
     } catch (error) {
       return response.status(500).json({ error: error.message });
     }
@@ -34,12 +34,12 @@ export class IngresosController {
         this._ingresoValidations.validateCreateData(request.body),
       );
 
-      const resultado = await this._ingresosService.crearIngreso({
+      const ingreso = await this._ingresosService.crearIngreso({
         ...request.body,
         user_id,
       });
 
-      return response.status(201).json(resultado);
+      return response.status(201).json(ingreso);
     } catch (error) {
       return next(error);
     }
@@ -77,15 +77,18 @@ export class IngresosController {
 
       validateOrThrow(this._ingresoValidations.validateDeleteData(id));
 
-      let ingreso = await this._ingresosService.eliminarIngreso(id, user_id);
+      let deletedCount = await this._ingresosService.eliminarIngreso(
+        id,
+        user_id,
+      );
 
-      if (!ingreso) {
-        return next();
+      if (!deletedCount) {
+        return response.error(404, `El Id: ${id} no existe.`);
       }
 
       return response.sendStatus(204);
     } catch (error) {
-      return next(error);
+      next(error);
     }
   };
 }

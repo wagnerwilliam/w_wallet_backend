@@ -14,11 +14,11 @@ export class UsuariosValidations {
     }
   };
 
-  validateUserExists({ usuario }) {
+  validateUserExists(usuario) {
     const errors = {};
 
     if (!usuario) {
-      errors.password = ["Usuario o contraseña incorrectos"];
+      errors.password = ["El Usuario no existe."];
     }
 
     return {

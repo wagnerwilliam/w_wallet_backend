@@ -4,9 +4,9 @@ import bcrypt from "bcrypt";
  */
 
 export class AuthValidations {
-  comparePassword = async (password, usuario) => {
+  comparePassword = async (password, hashedPassword) => {
     const errors = {};
-    const isValid = await bcrypt.compare(password, usuario.password);
+    const isValid = await bcrypt.compare(password, hashedPassword);
 
     if (!isValid) {
       errors.password = ["Usuario o contraseña incorrectos"];

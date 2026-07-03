@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { CategoriasController } from "../controllers/categorias.controller.js";
 import { CategoriasService } from "../services/categorias.services.js";
-import { CategoriasValidations } from "../validations/categorias.js";
+import { CategoriasValidations } from "../validations/categorias.validation.js";
 
 const router = Router();
 const categoriasService = new CategoriasService();
