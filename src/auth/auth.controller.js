@@ -86,7 +86,7 @@ export class AuthController {
       });
 
       return response.json({
-        accessToken,
+        newAccessToken,
       });
     } catch (error) {
       next(error);
