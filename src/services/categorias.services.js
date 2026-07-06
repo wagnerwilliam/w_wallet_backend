@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import { Categorias } from "../models/categorias.model.js";
-import { connectDB } from "../config/db_connection.js";
 
 /**
  * Servicio encargado de manejar todas las operaciones
@@ -15,80 +13,31 @@ import { connectDB } from "../config/db_connection.js";
  * para evitar conexiones persistentes innecesarias.
  */
 export class CategoriasService {
-  obtenerCategorias = (user_id) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
+  async obtenerCategorias(user_id) {
+    return await Categorias.find({ user_id });
+  }
 
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          return Categorias.find({ user_id });
-        })
-        .then((response) => ok(response))
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
-    });
-  };
+  async crearCategoria(data) {
+    const categoria = new Categorias(data);
+    return await categoria.save();
+  }
 
-  crearCategoria = (data) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          const nuevaCategoria = new Categorias(data);
-          return nuevaCategoria.save();
-        })
-        .then((response) => ok(response))
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
-    });
-  };
+  async editarCategoria(id, data, user_id) {
+    return await Categorias.updateOne(
+      { _id: id, user_id },
+      {
+        $set: {
+          ...data,
+          updated_at: new Date(),
+        },
+      },
+    );
+  }
 
-  editarCategoria = (id, data, user_id) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          return Categorias.updateOne(
-            { _id: id, user_id },
-            { $set: { ...data, updated_at: new Date() } },
-          );
-        })
-        .then((response) => ok(response))
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
+  eliminarCategoria(id, user_id) {
+    return Categorias.deleteOne({
+      _id: id,
+      user_id,
     });
-  };
-
-  eliminarCategoria = (id, user_id) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          return Categorias.deleteOne({ _id: id, user_id });
-        })
-        .then((response) => ok(response.deletedCount))
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
-    });
-  };
+  }
 }

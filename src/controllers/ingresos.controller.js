@@ -77,12 +77,9 @@ export class IngresosController {
 
       validateOrThrow(this._ingresoValidations.validateDeleteData(id));
 
-      let deletedCount = await this._ingresosService.eliminarIngreso(
-        id,
-        user_id,
-      );
+      let result = await this._ingresosService.eliminarIngreso(id, user_id);
 
-      if (!deletedCount) {
+      if (!result.deletedCount) {
         return response.error(404, `El Id: ${id} no existe.`);
       }
 

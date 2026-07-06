@@ -74,9 +74,9 @@ export class GastosController {
 
       validateOrThrow(this._gastosValidations.validateDeleteData(id));
 
-      let deletedCount = await this._gastosService.eliminarGasto(id, user_id);
+      let result = await this._gastosService.eliminarGasto(id, user_id);
 
-      if (!deletedCount) {
+      if (!result.deletedCount) {
         return response.error(404, `El Id: ${id} no existe.`);
       }
 

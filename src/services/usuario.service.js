@@ -1,50 +1,19 @@
-import mongoose from "mongoose";
-import { connectDB } from "../config/db_connection.js";
 import { Usuarios } from "../models/usuarios.model.js";
 
 export class UsuariosService {
-  registerUser = async (data) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          const nuevoUsuario = new Usuarios(data);
-          return nuevoUsuario.save();
-        })
-        .then((response) => ok(response))
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
-    });
-  };
+  registerUser(data) {
+    return new Usuarios(data).save();
+  }
 
-  checkExists = ({ email, username }) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          return Usuarios.findOne({
-            $or: [{ email }, { username }],
-          }).select("+password");
-        })
-        .then((usuario) => {
-          ok({
-            usuario,
-            email: usuario?.email === email,
-            username: usuario?.username === username,
-          });
-        })
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
-    });
-  };
+  async checkExists({ email, username }) {
+    const usuario = await Usuarios.findOne({
+      $or: [{ email }, { username }],
+    }).select("+password");
+
+    return {
+      usuario,
+      email: usuario?.email === email,
+      username: usuario?.username === username,
+    };
+  }
 }

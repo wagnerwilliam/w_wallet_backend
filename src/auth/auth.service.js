@@ -5,8 +5,6 @@ import { Token } from "../models/token.model.js";
 export class AuthService {
   guardarToken = (data) => {
     return new Promise((ok, ko) => {
-      console.log(data);
-
       let isConnected = false;
       connectDB()
         .then(() => {
