@@ -8,7 +8,7 @@ export class DashboardController {
       let { period = "month" } = request.query;
       let { user_id } = request;
 
-      const dashboard = await this._dashboardService.obtenerResumen(
+      const dashboard = await this._dashboardService.obtenerDashboard(
         user_id,
         period,
       );
