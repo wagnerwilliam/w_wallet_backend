@@ -64,6 +64,8 @@ export class AuthController {
     try {
       const { refreshToken, user_id } = request;
 
+      //quiza merezca la pena validar la existencia en bd antes de eliminar
+
       // servicio en auth para eliminar token.
       await this._authService.eliminarToken(refreshToken, user_id);
 
@@ -107,6 +109,9 @@ export class AuthController {
       data.password = await bcrypt.hash(data.password, 10);
 
       const resultado = await this._usuariosService.registerUser(data);
+      // validar la posibilidad de agregar una tarea en 2 plano para crear categorias por defecto para cada usuario.
+      // usndo BullMQ, redis
+      //de momento hacerlo usando un servicio.
 
       return response.status(201).json(resultado);
     } catch (error) {

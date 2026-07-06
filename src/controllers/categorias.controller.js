@@ -83,12 +83,9 @@ export class CategoriasController {
 
       validateOrThrow(this._categoriasValidations.validateDeleteData(id));
 
-      let deletedCount = await this._categoriasService.eliminarCategoria(
-        id,
-        user_id,
-      );
+      let result = await this._categoriasService.eliminarCategoria(id, user_id);
 
-      if (!deletedCount) {
+      if (!result.deletedCount) {
         return response.error(404, `El Id: ${id} no existe.`);
       }
 
