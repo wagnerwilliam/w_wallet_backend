@@ -1,7 +1,7 @@
 import { Ingresos } from "../models/ingresos.model.js";
 import { Gastos } from "../models/gastos.model.js";
 import { getDateRange } from "../utils/dateRange.js";
-import { round } from "../utils/DateRange.js";
+import { round } from "../utils/dateRange.js";
 
 export class DashboardService {
   total = async (Model, user_id, from, to) => {
