@@ -3,40 +3,18 @@ import { connectDB } from "../config/db_connection.js";
 import { Token } from "../models/token.model.js";
 
 export class AuthService {
-  guardarToken = (data) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          const nuevoRefreshToken = new Token(data);
-          return nuevoRefreshToken.save();
-        })
-        .then((response) => ok(response.token))
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
-    });
+  guardarToken = async (data) => {
+    const nuevoRefreshToken = new Token(data);
+
+    const response = await nuevoRefreshToken.save();
+
+    return response.token;
   };
 
-  eliminarToken = (token, user_id) => {
-    return new Promise((ok, ko) => {
-      let isConnected = false;
-      connectDB()
-        .then(() => {
-          isConnected = true;
-          return Token.findOneAndDelete({ token, user_id });
-        })
-        .then((deletedToken) => ok(deletedToken))
-        .catch((error) => ko(error))
-        .finally(() => {
-          if (isConnected) {
-            mongoose.disconnect();
-          }
-        });
+  eliminarToken = async (token, user_id) => {
+    return await Token.findOneAndDelete({
+      token,
+      user_id,
     });
   };
 }

@@ -15,8 +15,8 @@ import {
   authorizationMiddleware,
 } from "./src/middlewares/global.middleware.js";
 
-const server = express();
 await connectDB();
+const server = express();
 
 server.use(responseMiddleware);
 
