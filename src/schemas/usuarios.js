@@ -7,10 +7,12 @@ export const usuariosSchema = mongoose.Schema({
     trim: true,
     minlength: 3,
     maxlength: 100,
+    default: "",
   },
   birth_date: {
     type: Date,
     required: false,
+    default: null,
   },
   email: {
     //va

@@ -1,4 +1,5 @@
 import { Ingresos } from "../models/ingresos.model.js";
+import { getDateRange } from "../utils/dashboard.js";
 
 /**
  * Servicio encargado de gestionar operaciones CRUD de Ingresos.
@@ -6,8 +7,23 @@ import { Ingresos } from "../models/ingresos.model.js";
  */
 
 export class IngresosService {
-  obtenerIngresos(user_id) {
-    return Ingresos.find({ user_id });
+  obtenerIngresos(user_id, period) {
+    const query = {
+      user_id,
+    };
+
+    if (period) {
+      const { from, to } = getDateRange(period);
+
+      query.created_at = {
+        $gte: from,
+        $lte: to,
+      };
+    }
+
+    return Ingresos.find(query).sort({
+      created_at: -1,
+    });
   }
 
   crearIngreso(data) {

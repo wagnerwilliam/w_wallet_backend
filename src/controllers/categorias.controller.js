@@ -95,3 +95,23 @@ export class CategoriasController {
     }
   };
 }
+
+// categorias por defecto para cundo cada usuario se registre:
+
+// Ingresos
+// | Nombre            | Descripción                                        |
+// | ----------------- | -------------------------------------------------- |
+// | 💼 Trabajo        | Salario, nómina, honorarios, pagos por servicios.  |
+// | 💰 Ventas         | Venta de productos o servicios.                    |
+// | 📈 Inversiones    | Dividendos, intereses, rentabilidad.               |
+// | 🎁 Regalos        | Dinero recibido de familiares o amigos.            |
+// | 📦 Otros ingresos | Cualquier ingreso que no encaje en las anteriores. |
+
+// Gastos
+// | Nombre          | Descripción                                     |
+// | --------------- | ----------------------------------------------- |
+// | 🛒 Alimentación | Supermercado, restaurantes, comida.             |
+// | 🏠 Vivienda     | Alquiler, hipoteca, servicios del hogar.        |
+// | 🚗 Transporte   | Combustible, transporte público, mantenimiento. |
+// | 🎬 Ocio         | Streaming, cine, viajes, entretenimiento.       |
+// | 📦 Otros gastos | Gastos ocasionales o sin categoría específica.  |
