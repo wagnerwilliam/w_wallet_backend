@@ -19,7 +19,11 @@ export class IngresosController {
   obtener = async (request, response) => {
     try {
       let { user_id } = request;
-      const ingresos = await this._ingresosService.obtenerIngresos(user_id);
+      let { period = "month" } = request.query;
+      const ingresos = await this._ingresosService.obtenerIngresos(
+        user_id,
+        period,
+      );
       return response.json(ingresos);
     } catch (error) {
       return response.status(500).json({ error: error.message });

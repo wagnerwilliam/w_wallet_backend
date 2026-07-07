@@ -54,6 +54,7 @@ export class AuthController {
 
       return response.json({
         accessToken,
+        usuario,
       });
     } catch (error) {
       return next(error);

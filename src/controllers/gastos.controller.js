@@ -19,7 +19,8 @@ export class GastosController {
   obtener = async (request, response) => {
     try {
       let { user_id } = request;
-      const gastos = await this._gastosService.obtenerGastos(user_id);
+      let { period = "month" } = request.query;
+      const gastos = await this._gastosService.obtenerGastos(user_id, period);
       return response.json(gastos);
     } catch (error) {
       return response.status(500).json({ error: error.message });

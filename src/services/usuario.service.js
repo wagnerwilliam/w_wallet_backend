@@ -16,4 +16,20 @@ export class UsuariosService {
       username: usuario?.username === username,
     };
   }
+
+  detalleUsuario = async (user_id) => {
+    return await Usuarios.findOne({ _id: user_id });
+  };
+
+  editarUsuario = async (user_id, data) => {
+    return Usuarios.updateOne(
+      { _id: user_id },
+      {
+        $set: {
+          ...data,
+          updated_at: new Date(),
+        },
+      },
+    );
+  };
 }
