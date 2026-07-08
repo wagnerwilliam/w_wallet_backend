@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-import { connectDB } from "../config/db_connection.js";
 import { Token } from "../models/token.model.js";
 
 export class AuthService {
