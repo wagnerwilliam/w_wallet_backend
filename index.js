@@ -9,12 +9,22 @@ import usuariosRouter from "./src/routes/usuarios.route.js";
 import { responseMiddleware } from "./src/middlewares/global.middleware.js";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./src/config/db_connection.js";
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
 
 import {
   globalMiddleware,
   clientKeyMiddleware,
   authorizationMiddleware,
 } from "./src/middlewares/global.middleware.js";
+
+dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 await connectDB();
 const server = express();
