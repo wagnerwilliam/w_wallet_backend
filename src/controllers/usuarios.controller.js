@@ -42,8 +42,6 @@ export class UsuariosController {
 
       return response.sendStatus(204);
     } catch (error) {
-      console.log(error);
-
       return next(error);
     }
   };

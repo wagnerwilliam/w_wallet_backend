@@ -5,8 +5,6 @@ export const usuariosSchema = mongoose.Schema({
     type: String,
     required: false,
     trim: true,
-    minlength: 3,
-    maxlength: 100,
     default: "",
   },
   birth_date: {
