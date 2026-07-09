@@ -1,3 +1,8 @@
+/**
+ * Controlador encargado de gestionar las operaciones relacionadas con el
+ * usuario autenticado, incluyendo la consulta y actualización
+ * de su información personal y fotografía de perfil.
+ */
 export class UsuariosController {
   constructor(UsuariosService, CloudinaryService, FotosService) {
     this._usuariosService = UsuariosService;
@@ -22,7 +27,7 @@ export class UsuariosController {
       let { full_name, birth_date } = request.body;
 
       if (request.file) {
-        // subir a Cloudinary
+        // subir imagen a Cloudinary
         let { url } = await this._cloudinaryService.upload(request.file);
         // guardar en colección photos
         await this._fotosService.guardarOActualizarFoto(user_id, url);

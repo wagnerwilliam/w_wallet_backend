@@ -5,6 +5,7 @@ import { UsuariosValidations } from "../validations/usuarios.validation.js";
 import { AuthValidations } from "../auth/auth.validation.js";
 import { refreshTokenMiddleware } from "../middlewares/global.middleware.js";
 import { AuthService } from "../auth/auth.service.js";
+import { CategoriasService } from "../services/categorias.services.js";
 
 const router = Router();
 
@@ -12,11 +13,13 @@ const usuarioService = new UsuariosService();
 const usuariosValidations = new UsuariosValidations();
 const authValidations = new AuthValidations();
 const authService = new AuthService();
+const categoriasService = new CategoriasService();
 const authController = new AuthController(
   usuarioService,
   usuariosValidations,
   authValidations,
   authService,
+  categoriasService,
 );
 
 router.post("/login", authController.login);

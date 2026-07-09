@@ -1,6 +1,7 @@
 import { validateOrThrow } from "../validations/validationHelper.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/auth.js";
 import bcrypt from "bcrypt";
+import { defaultCategorias } from "../utils/categorias.js";
 
 export class AuthController {
   constructor(
@@ -8,11 +9,13 @@ export class AuthController {
     UsuriosValidations,
     AuthValidations,
     AuthService,
+    CategoriasService,
   ) {
     this._usuariosService = UsuarioService;
     this._usuariosValidations = UsuriosValidations;
     this._authValidations = AuthValidations;
     this._authService = AuthService;
+    this._categoriasService = CategoriasService;
   }
 
   login = async (request, response, next) => {
@@ -110,9 +113,15 @@ export class AuthController {
       data.password = await bcrypt.hash(data.password, 10);
 
       const resultado = await this._usuariosService.registerUser(data);
+      
       // validar la posibilidad de agregar una tarea en 2 plano para crear categorias por defecto para cada usuario.
-      // usndo BullMQ, redis
-      //de momento hacerlo usando un servicio.
+      // usando BullMQ, redis
+      //de momento se hace directamente.
+      for (let i = 0; i < defaultCategorias.length; i++) {
+        const categoria = defaultCategorias[i];
+        categoria.user_id = String(resultado._id);
+        await this._categoriasService.crearCategoria(categoria);
+      }
 
       return response.status(201).json(resultado);
     } catch (error) {
