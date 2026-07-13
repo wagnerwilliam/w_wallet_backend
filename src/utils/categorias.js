@@ -1,76 +1,57 @@
-// categorias por defecto para cundo cada usuario se registre:
-
-// Ingresos
-// | Nombre            | Descripción                                        |
-// | ----------------- | -------------------------------------------------- |
-// | 💼 Trabajo        | Salario, nómina, honorarios, pagos por servicios.  |
-// | 💰 Ventas         | Venta de productos o servicios.                    |
-// | 📈 Inversiones    | Dividendos, intereses, rentabilidad.               |
-// | 🎁 Regalos        | Dinero recibido de familiares o amigos.            |
-// | 📦 Otros ingresos | Cualquier ingreso que no encaje en las anteriores. |
-
-// Gastos
-// | Nombre          | Descripción                                     |
-// | --------------- | ----------------------------------------------- |
-// | 🛒 Alimentación | Supermercado, restaurantes, comida.             |
-// | 🏠 Vivienda     | Alquiler, hipoteca, servicios del hogar.        |
-// | 🚗 Transporte   | Combustible, transporte público, mantenimiento. |
-// | 🎬 Ocio         | Streaming, cine, viajes, entretenimiento.       |
-// | 📦 Otros gastos | Gastos ocasionales o sin categoría específica.  |
-
+// categorias por defecto cuando cada usuario se registre:
 
 export const defaultCategorias = [
   // INGRESOS
   {
     name: "Trabajo",
     type: "ingreso",
-    color: "#10B981", // Emerald
+    color: "#10B981",
   },
   {
     name: "Ventas",
     type: "ingreso",
-    color: "#14B8A6", // Teal
+    color: "#14B8A6",
   },
   {
     name: "Inversiones",
     type: "ingreso",
-    color: "#3B82F6", // Blue
+    color: "#3B82F6",
   },
   {
     name: "Regalos",
     type: "ingreso",
-    color: "#8B5CF6", // Violet
+    color: "#8B5CF6",
   },
   {
     name: "Otros ingresos",
     type: "ingreso",
-    color: "#22C55E", // Green
+    color: "#22C55E",
   },
 
   // GASTOS
   {
     name: "Alimentación",
     type: "gasto",
-    color: "#F97316", // Orange
+    color: "#F97316",
   },
   {
     name: "Vivienda",
     type: "gasto",
-    color: "#EF4444", // Red
+    color: "#EF4444",
   },
   {
     name: "Transporte",
     type: "gasto",
-    color: "#EAB308", // Yellow
+    color: "#EAB308",
   },
   {
     name: "Ocio",
     type: "gasto",
-    color: "#EC4899", // Pink
+    color: "#EC4899",
   },
   {
     name: "Otros gastos",
     type: "gasto",
-    color: "#6B7280", // Gray
+    color: "#6B7280",
   },
 ];

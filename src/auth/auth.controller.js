@@ -113,7 +113,7 @@ export class AuthController {
       data.password = await bcrypt.hash(data.password, 10);
 
       const resultado = await this._usuariosService.registerUser(data);
-      
+
       // validar la posibilidad de agregar una tarea en 2 plano para crear categorias por defecto para cada usuario.
       // usando BullMQ, redis
       //de momento se hace directamente.
