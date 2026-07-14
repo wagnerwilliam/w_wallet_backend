@@ -53,10 +53,12 @@ export class MetasController {
     try {
       const { user_id } = request;
       const { id } = request.params;
+      const { saved, description } = request.body;
 
       let { matchedCount } = await this._metasService.agregarAhorro(
         id,
-        request.body,
+        saved,
+        description,
         user_id,
       );
 
@@ -64,9 +66,28 @@ export class MetasController {
         return next();
       }
 
+      // esto deberia ir en una tarea en segundo plano.
+      await this._metasService.crearImporteAhorrado({
+        meta_id: id,
+        user_id,
+        amount: saved,
+        description,
+      });
+
       return response.sendStatus(204);
     } catch (error) {
       return next(error);
+    }
+  };
+
+  obtenerResumenMetas = async (request, response) => {
+    try {
+      let { user_id } = request;
+      const resumenMetas =
+        await this._metasService.obtenerResumenMetas(user_id);
+      return response.json(resumenMetas);
+    } catch (error) {
+      return response.status(500).json({ error: error.message });
     }
   };
 

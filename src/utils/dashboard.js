@@ -39,7 +39,7 @@ export const getDateRange = (period) => {
 
 export const round = (value) => Math.round(value * 100) / 100;
 
-export const getTotal = async (Model, user_id, from, to) => {
+export const getTotal = async (Model, user_id, from, to, field = "value") => {
   const result = await Model.aggregate([
     {
       $match: {
@@ -54,7 +54,7 @@ export const getTotal = async (Model, user_id, from, to) => {
       $group: {
         _id: null,
         total: {
-          $sum: "$value",
+          $sum: `$${field}`,
         },
       },
     },
@@ -69,6 +69,8 @@ export const obtenerUltimosRegistros = async (
   from,
   to,
   type,
+  amountField = "value",
+  nameField = "name",
 ) => {
   const records = await Model.find({
     user_id,
@@ -83,9 +85,11 @@ export const obtenerUltimosRegistros = async (
 
   return records.map((record) => ({
     _id: record._id,
-    name: record.name,
-    category_id: record.category_id,
-    amount: record.value,
+    name: record[nameField],
+    category_id: record.category_id ?? null,
+    amount: record[amountField],
+    description: record.description ?? null,
+    meta_id: record.meta_id ?? null,
     type,
     created_at: record.created_at,
   }));
