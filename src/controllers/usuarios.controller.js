@@ -28,6 +28,7 @@ export class UsuariosController {
 
       if (request.file) {
         // subir imagen a Cloudinary
+        // validar que ocurre si se sube un pdf o archivo extraño.
         let { url } = await this._cloudinaryService.upload(request.file);
         // guardar en colección photos
         await this._fotosService.guardarOActualizarFoto(user_id, url);

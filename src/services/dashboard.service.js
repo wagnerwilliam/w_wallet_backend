@@ -32,6 +32,7 @@ export class DashboardService {
     const [ingresos, gastos, ahorros] = await Promise.all([
       obtenerUltimosRegistros(Ingresos, user_id, from, to, "income", "value"),
       obtenerUltimosRegistros(Gastos, user_id, from, to, "expense", "value"),
+      //rervisar esto se puede solucionar antes del sabado.
       obtenerUltimosRegistros(
         SavedAmount,
         user_id,
