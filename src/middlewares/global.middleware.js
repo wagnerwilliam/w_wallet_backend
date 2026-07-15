@@ -16,9 +16,10 @@ export const globalMiddleware = (error, request, response, next) => {
 };
 
 /**
- * Middleware para rutas o no encontradas (404 handler).
+ * Valida el Client Key enviado por el cliente.
  *
- * Se ejecuta cuando ninguna ruta coincide con la solicitud.
+ * Permite únicamente solicitudes que incluyan un Client Key
+ * válido en la cabecera de la petición.
  */
 
 export const clientKeyMiddleware = (request, response, next) => {
@@ -44,6 +45,13 @@ export const clientKeyMiddleware = (request, response, next) => {
 
   next();
 };
+
+/**
+ * Valida el refresh token almacenado en la cookie HttpOnly.
+ *
+ * Si el token es válido, extrae el identificador del usuario
+ * para permitir la emisión de un nuevo access token.
+ */
 
 export const refreshTokenMiddleware = (request, response, next) => {
   const { refreshToken } = request.cookies;
@@ -71,6 +79,13 @@ export const refreshTokenMiddleware = (request, response, next) => {
     next();
   });
 };
+
+/**
+ * Valida el access token enviado en la cabecera Authorization.
+ *
+ * Protege las rutas privadas verificando la autenticidad y vigencia
+ * del token antes de permitir el acceso al recurso solicitado.
+ */
 
 export const authorizationMiddleware = (request, response, next) => {
   const { authorization } = request.headers;
@@ -111,6 +126,13 @@ export const authorizationMiddleware = (request, response, next) => {
     next();
   });
 };
+
+/**
+ * Extiende el objeto response con métodos auxiliares.
+ *
+ * Proporciona respuestas estandarizadas para operaciones
+ * exitosas y para el manejo de errores.
+ */
 
 export const responseMiddleware = (request, response, next) => {
   response.error = (status, message, details = null) => {
