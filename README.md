@@ -233,7 +233,7 @@ El frontend del proyecto se encuentra disponible en:
 
 https://github.com/wagnerwilliam/w_wallet_web
 
-Aplicación:
+Demo:
 
 https://w-wallet-web.vercel.app/
 
