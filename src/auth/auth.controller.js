@@ -38,6 +38,7 @@ export class AuthController {
           usuario.password,
         ),
       );
+      //Aqui se debe validar si ya hizo login. 
 
       const accessToken = generateAccessToken(usuario);
       const refreshToken = generateRefreshToken(usuario);
