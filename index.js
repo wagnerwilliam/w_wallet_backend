@@ -22,12 +22,16 @@ import {
 dotenv.config();
 
 /**
- * Configuración global del cliente de Cloudinary.
+ * ------------------------------------------------------------------
+ * Configuración de Cloudinary
+ * ------------------------------------------------------------------
  *
- * Se inicializa una única instancia utilizando las credenciales
- * definidas en las variables de entorno para permitir la subida,
- * actualización y eliminación de imágenes desde cualquier parte
- * de la aplicación.
+ * Inicializa el cliente oficial de Cloudinary utilizando las
+ * credenciales definidas en las variables de entorno.
+ *
+ * Esta configuración se realiza una única vez al iniciar la aplicación
+ * para que cualquier servicio pueda subir imágenes sin necesidad de
+ * volver a configurar el cliente.
  */
 
 cloudinary.config({
@@ -36,13 +40,45 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * Establece la conexión con MongoDB antes de iniciar el servidor.
+ */
 await connectDB();
+
+/**
+ * Instancia principal de la aplicación Express.
+ */
 const server = express();
 
+/**
+ * ------------------------------------------------------------------
+ * Middlewares globales
+ * ------------------------------------------------------------------
+ */
+
+/**
+ * Agrega los métodos response.success() y response.error()
+ * para estandarizar todas las respuestas HTTP.
+ */
 server.use(responseMiddleware);
 
+/**
+ * Permite recibir cuerpos JSON.
+ */
 server.use(express.json());
+
+/**
+ * Permite leer las cookies enviadas por el navegador.
+ * Se utiliza principalmente para obtener el Refresh Token.
+ */
 server.use(cookieParser());
+
+/**
+ * Configuración de CORS.
+ *
+ * Permite solicitudes únicamente desde el origen configurado
+ * en las variables de entorno y habilita el envío de cookies.
+ */
 server.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -50,12 +86,38 @@ server.use(
   }),
 );
 
+/**
+ * Valida el Client-Key enviado por el frontend.
+ *
+ * Este middleware protege toda la API evitando solicitudes
+ * provenientes de clientes no autorizados.
+ */
 server.use(clientKeyMiddleware);
 
+/**
+ * ------------------------------------------------------------------
+ * Rutas públicas
+ * ------------------------------------------------------------------
+ *
+ * Estas rutas no requieren autenticación mediante Access Token.
+ */
 server.use("/api/auth", authRouter);
 
+/**
+ * ------------------------------------------------------------------
+ * Middleware de autenticación
+ * ------------------------------------------------------------------
+ *
+ * Todas las rutas registradas a partir de este punto requieren
+ * un Access Token válido.
+ */
 server.use(authorizationMiddleware);
 
+/**
+ * ------------------------------------------------------------------
+ * Rutas protegidas
+ * ------------------------------------------------------------------
+ */
 server.use("/api/usuarios/", usuariosRouter);
 server.use("/api/metas/", metasRouter);
 server.use("/api/dashboard", dashboardRouter);
@@ -63,13 +125,20 @@ server.use("/api/ingresos", ingresosRouter);
 server.use("/api/gastos", gastosRouter);
 server.use("/api/categorias", categoriasRouter);
 
+/**
+ * Middleware global para el manejo centralizado de errores.
+ *
+ * Debe registrarse al final de todas las rutas.
+ */
 server.use(globalMiddleware);
 
 server.get("/", async (request, response) => {
   response.json({ message: "Hola mundo." });
 });
 
+/**
+ * Inicia el servidor HTTP.
+ */
 server.listen(process.env.PORT, () => {
   console.log("Servidor en ejecucion.");
 });
-  

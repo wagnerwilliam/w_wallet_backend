@@ -3,6 +3,22 @@ import { generateAccessToken, generateRefreshToken } from "../utils/auth.js";
 import bcrypt from "bcrypt";
 import { defaultCategorias } from "../utils/categorias.js";
 
+/**
+ * Controlador encargado de la autenticación y gestión de sesiones.
+ *
+ * Centraliza todas las operaciones relacionadas con el ciclo de vida
+ * de un usuario autenticado, incluyendo:
+ *
+ * - Registro de nuevos usuarios.
+ * - Inicio de sesión.
+ * - Renovación de Access Tokens mediante Refresh Tokens.
+ * - Cierre de sesión y revocación de Refresh Tokens.
+ *
+ * Además, coordina la validación de datos, la generación de tokens
+ * JWT y la comunicación con los servicios encargados de la persistencia
+ * de usuarios, categorías y sesiones.
+ */
+
 export class AuthController {
   constructor(
     UsuarioService,
@@ -43,7 +59,7 @@ export class AuthController {
       const accessToken = generateAccessToken(usuario);
       const refreshToken = generateRefreshToken(usuario);
 
-      //guardar refresh token en mongo.
+      //guardar refresh token en la baase de datos.
       let savedRefreshToken = await this._authService.guardarToken({
         token: refreshToken,
         user_id: usuario._id,
