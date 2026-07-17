@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+/**
+ * Esquema que representa a un usuario de la aplicación.
+ *
+ * Almacena la información necesaria para la autenticación,
+ * el perfil del usuario y el estado de su cuenta.
+ */
+
 export const usuariosSchema = mongoose.Schema({
   full_name: {
     type: String,

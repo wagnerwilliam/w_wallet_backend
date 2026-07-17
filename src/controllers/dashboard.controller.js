@@ -1,3 +1,7 @@
+/**
+ * Controlador encargado de gestionar las peticiones relacionadas
+ * con el dashboard del usuario.
+ */
 export class DashboardController {
   constructor(DashboardService) {
     this._dashboardService = DashboardService;

@@ -7,8 +7,15 @@ import { refreshTokenMiddleware } from "../middlewares/global.middleware.js";
 import { AuthService } from "../auth/auth.service.js";
 import { CategoriasService } from "../services/categorias.services.js";
 
+/**
+ * Router encargado de gestionar todas las rutas relacionadas
+ * con la autenticación de usuarios.
+ */
 const router = Router();
 
+/**
+ * Instancias de servicios encargados de la lógica de negocio.
+ */
 const usuarioService = new UsuariosService();
 const usuariosValidations = new UsuariosValidations();
 const authValidations = new AuthValidations();

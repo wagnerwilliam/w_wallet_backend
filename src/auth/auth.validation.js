@@ -1,7 +1,4 @@
 import bcrypt from "bcrypt";
-/**
- * Expresiones regulares utilizadas para validar campos de ingresos.
- */
 
 export class AuthValidations {
   comparePassword = async (password, hashedPassword) => {

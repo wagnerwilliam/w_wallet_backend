@@ -1,5 +1,12 @@
 import { Schema } from "mongoose";
 
+/**
+ * Esquema que almacena los Refresh Tokens emitidos a los usuarios.
+ *
+ * Cada registro representa una sesión autenticada y permite validar,
+ * renovar o revocar un Refresh Token cuando el Access Token expira.
+ */
+
 export const tokenSchema = Schema({
   user_id: {
     type: String,

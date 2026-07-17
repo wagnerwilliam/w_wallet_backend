@@ -1,5 +1,12 @@
 import { Schema } from "mongoose";
 
+/**
+ * Esquema que representa una meta de ahorro creada por un usuario.
+ *
+ * Cada meta almacena el objetivo económico, el importe acumulado,
+ * información descriptiva y los datos necesarios para su seguimiento.
+ */
+
 export const metasSchema = Schema({
   name: {
     type: String,
@@ -73,6 +80,13 @@ export const metasSchema = Schema({
     type: Date,
   },
 });
+
+/**
+ * Esquema que registra cada aporte realizado a una meta de ahorro.
+ *
+ * Permite mantener un historial de todos los movimientos realizados
+ * por el usuario para conocer cuándo y cuánto dinero se añadió.
+ */
 
 export const savedAmountSchema = Schema({
   amount: {
