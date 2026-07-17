@@ -21,6 +21,15 @@ import {
 
 dotenv.config();
 
+/**
+ * Configuración global del cliente de Cloudinary.
+ *
+ * Se inicializa una única instancia utilizando las credenciales
+ * definidas en las variables de entorno para permitir la subida,
+ * actualización y eliminación de imágenes desde cualquier parte
+ * de la aplicación.
+ */
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -47,7 +56,6 @@ server.use("/api/auth", authRouter);
 
 server.use(authorizationMiddleware);
 
-//server.use("/api/auth/logout", ingresosRouter);
 server.use("/api/usuarios/", usuariosRouter);
 server.use("/api/metas/", metasRouter);
 server.use("/api/dashboard", dashboardRouter);
@@ -64,3 +72,4 @@ server.get("/", async (request, response) => {
 server.listen(process.env.PORT, () => {
   console.log("Servidor en ejecucion.");
 });
+  

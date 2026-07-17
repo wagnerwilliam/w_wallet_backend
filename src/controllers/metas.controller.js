@@ -1,3 +1,7 @@
+/**
+ * Controlador encargado de gestionar las operaciones relacionadas
+ * con las metas de ahorro del usuario.
+ */
 export class MetasController {
   constructor(MetasService) {
     this._metasService = MetasService;

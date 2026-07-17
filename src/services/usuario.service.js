@@ -1,6 +1,12 @@
 import { Usuarios } from "../models/usuarios.model.js";
 import mongoose from "mongoose";
 
+/**
+ * Servicio encargado de gestionar la información de los usuarios.
+ *
+ * Contiene la lógica relacionada con el registro, validación,
+ * consulta y actualización de perfiles de usuario.
+ */
 export class UsuariosService {
   registerUser(data) {
     return new Usuarios(data).save();
@@ -17,6 +23,16 @@ export class UsuariosService {
       username: usuario?.username === username,
     };
   }
+
+  /**
+   * Obtiene el perfil completo de un usuario.
+   *
+   * Se utiliza una agregación para unir la información del usuario
+   * con su fotografía de perfil almacenada en la colección `fotos`.
+   *
+   * Si el usuario no tiene fotografía registrada, el campo `photo`
+   * será `null`.
+  */
 
   detalleUsuario = async (user_id) => {
     const [usuario] = await Usuarios.aggregate([

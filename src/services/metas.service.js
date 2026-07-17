@@ -3,6 +3,13 @@ import mongoose from "mongoose";
 
 const { Types } = mongoose;
 
+/**
+ * Servicio encargado de gestionar las metas de ahorro.
+ *
+ * Contiene la lógica de negocio relacionada con la creación,
+ * actualización, consulta y resumen de las metas financieras
+ * de un usuario.
+ */
 export class MetasService {
   obtenerMetas = async (user_id) => {
     return await Metas.find({ user_id }).sort({
