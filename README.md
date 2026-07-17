@@ -101,15 +101,20 @@ Crear un archivo `.env`
 ```env
 PORT=3000
 
-DATABASE_URL=
+MONGO_URL=
 
 JWT_SECRET_KEY=
 
 CLIENT_KEY=
+CLIENT_APP_URL=
 
 CLOUDINARY_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
+
+JWT_ACCESS_EXPIRES_IN=
+JWT_REFRESH_EXPIRES_IN=
+
 ```
 
 ---
@@ -120,12 +125,6 @@ Modo desarrollo
 
 ```bash
 npm run dev
-```
-
-Modo producción
-
-```bash
-npm start
 ```
 
 ---
